@@ -161,7 +161,15 @@ jobs:
         export CC=/usr/bin/clang-12
         export CXX=/usr/bin/clang++-12
         cd openwrt && ./scripts/feeds install -a
-
+        
+    - name: 修复 python3 Makefile，禁用 profile-opt 并移除无效参数
+      run: |
+        cd /mnt/workdir/openwrt
+        sed -i '/^PKG_RELEASE:=/a\
+        CFLAGS_NODIST := $(filter-out -fprofile-correction,$(CFLAGS_NODIST))\
+        CONFIGURE_ARGS += --disable-optimizations
+        ' feeds/packages/lang/python/python3/Makefile
+        
     - name: 加载自定义配置
       env:
         CONFIG_FILE_PATH: ${{ matrix.ARCHITECTURE }}/${{ env.CONFIG_FILE }}
