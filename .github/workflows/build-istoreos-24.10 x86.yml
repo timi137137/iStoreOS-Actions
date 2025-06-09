@@ -165,10 +165,10 @@ jobs:
       run: |
         cd /mnt/workdir/openwrt
         sed -i '/^PKG_RELEASE:=/a\
-CFLAGS_NODIST := $(filter-out -fprofile-correction -fprofile-use,$(CFLAGS_NODIST))\
-LDFLAGS_NODIST := $(filter-out -fprofile-correction -fprofile-use,$(LDFLAGS_NODIST))\
-CONFIGURE_ARGS += --disable-optimizations\
-' feeds/packages/lang/python/python3/Makefile
+        CFLAGS_NODIST := $(filter-out -fprofile-correction -fprofile-use,$(CFLAGS_NODIST))\
+        LDFLAGS_NODIST := $(filter-out -fprofile-correction -fprofile-use,$(LDFLAGS_NODIST))\
+        CONFIGURE_ARGS += --disable-optimizations\
+        ' feeds/packages/lang/python/python3/Makefile
         # 检查插入是否生效
         grep -E "profile|optimizations" feeds/packages/lang/python/python3/Makefile
 
