@@ -36,7 +36,6 @@ env:
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
   GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-  # 关键修正：移除 profile 优化参数
   CFLAGS_NODIST: ""
   LDFLAGS_NODIST: ""
 
@@ -166,10 +165,13 @@ jobs:
       run: |
         cd /mnt/workdir/openwrt
         sed -i '/^PKG_RELEASE:=/a\
-        CFLAGS_NODIST := $(filter-out -fprofile-correction,$(CFLAGS_NODIST))\
-        CONFIGURE_ARGS += --disable-optimizations
-        ' feeds/packages/lang/python/python3/Makefile
-        
+CFLAGS_NODIST := $(filter-out -fprofile-correction -fprofile-use,$(CFLAGS_NODIST))\
+LDFLAGS_NODIST := $(filter-out -fprofile-correction -fprofile-use,$(LDFLAGS_NODIST))\
+CONFIGURE_ARGS += --disable-optimizations\
+' feeds/packages/lang/python/python3/Makefile
+        # 检查插入是否生效
+        grep -E "profile|optimizations" feeds/packages/lang/python/python3/Makefile
+
     - name: 加载自定义配置
       env:
         CONFIG_FILE_PATH: ${{ matrix.ARCHITECTURE }}/${{ env.CONFIG_FILE }}
