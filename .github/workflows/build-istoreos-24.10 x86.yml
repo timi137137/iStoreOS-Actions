@@ -36,8 +36,6 @@ env:
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
   GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-  CFLAGS_NODIST: ""
-  LDFLAGS_NODIST: ""
 
 jobs:
   build:
@@ -81,40 +79,24 @@ jobs:
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /etc/mysql /etc/php /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq update
         sudo -E apt-get -qq install $(cat $GITHUB_WORKSPACE/depends/${{ matrix.os }})
-        wget https://bootstrap.pypa.io/pip/3.6/get-pip.py
+        
+        # 安装 Python 相关依赖
+        wget -q https://bootstrap.pypa.io/pip/3.6/get-pip.py
         sudo python3 get-pip.py
         sudo rm -rf get-pip.py
         sudo pip install pyelftools
+        
         echo "------------------------------- 清理Docker镜像和软件 -------------------------------"
-        docker rmi `docker images -q`
+        docker rmi `docker images -q` 2>/dev/null || true
         docker image prune -a -f
         sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* adoptopenjdk* mysql* php* mongodb* dotnet* moby* snapd* android* || true
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
+        
         echo "------------------------------- 设置工作目录及时区 -------------------------------"
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /mnt/workdir
         sudo chown $USER:$GROUPS /mnt/workdir
-
-    - name: 安装 LLVM 和 Clang 12
-      run: |
-        sudo apt update
-        sudo apt install -y llvm-12 clang-12
-        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 100
-        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 100
-        sudo ln -sf /usr/bin/clang-12 /usr/local/bin/clang
-        sudo ln -sf /usr/bin/clang++-12 /usr/local/bin/clang++
-        echo 'export CC=/usr/bin/clang-12' >> $GITHUB_ENV
-        echo 'export CXX=/usr/bin/clang++-12' >> $GITHUB_ENV
-        echo 'export PATH=/usr/bin:$PATH' >> $GITHUB_ENV
-
-    - name: 检查 Clang 版本
-      run: |
-        export PATH=/usr/bin:$PATH
-        export CC=/usr/bin/clang-12
-        export CXX=/usr/bin/clang++-12
-        which clang
-        clang --version
 
     - name: 安装 Go 1.21.1
       uses: actions/setup-go@v5
@@ -132,16 +114,13 @@ jobs:
       uses: klever1988/cachewrtbuild@main
       with:
         ccache: 'true'
-        mixkey: ${{ matrix.os }}-${{ matrix.ARCHITECTURE }}-${{ matrix.REPO_BRANCH }}-rustfix
+        mixkey: ${{ matrix.os }}-${{ matrix.ARCHITECTURE }}-${{ matrix.REPO_BRANCH }}-gcc-optimized
         prefix: ${{ github.workspace }}/openwrt
 
     - name: 加载自定义 feeds
       env:
         FEEDS_CONF_PATH: ${{ matrix.ARCHITECTURE }}/${{ env.FEEDS_CONF }}
       run: |
-        export PATH=/usr/bin:$PATH
-        export CC=/usr/bin/clang-12
-        export CXX=/usr/bin/clang++-12
         [ -e $FEEDS_CONF_PATH ] && mv $FEEDS_CONF_PATH openwrt/$FEEDS_CONF
         chmod +x $DIY_P1_SH
         cd openwrt
@@ -149,36 +128,39 @@ jobs:
 
     - name: 更新 feeds
       run: |
-        export PATH=/usr/bin:$PATH
-        export CC=/usr/bin/clang-12
-        export CXX=/usr/bin/clang++-12
-        cd openwrt && ./scripts/feeds update -a
+        cd openwrt
+        ./scripts/feeds update -a
 
     - name: 安装 feeds
       run: |
-        export PATH=/usr/bin:$PATH
-        export CC=/usr/bin/clang-12
-        export CXX=/usr/bin/clang++-12
-        cd openwrt && ./scripts/feeds install -a
+        cd openwrt
+        ./scripts/feeds install -a
         
-    - name: 修复 python3 Makefile，禁用 profile-opt 并移除无效参数
+    - name: 修复 Python3 编译问题
       run: |
         cd /mnt/workdir/openwrt
-        sed -i '/^PKG_RELEASE:=/a\
-        CFLAGS_NODIST := $(filter-out -fprofile-correction -fprofile-use,$(CFLAGS_NODIST))\
-        LDFLAGS_NODIST := $(filter-out -fprofile-correction -fprofile-use,$(LDFLAGS_NODIST))\
-        CONFIGURE_ARGS += --disable-optimizations\
-        ' feeds/packages/lang/python/python3/Makefile
-        # 检查插入是否生效
-        grep -E "profile|optimizations" feeds/packages/lang/python/python3/Makefile
-
+        echo "修复 Python3 编译问题..."
+        
+        # 检查 Python3 Makefile 是否存在
+        if [ -f feeds/packages/lang/python/python3/Makefile ]; then
+          echo "找到 Python3 Makefile，应用修复..."
+          
+          # 禁用 PGO 优化，这是导致编译失败的主要原因
+          sed -i 's/--enable-optimizations/--disable-optimizations/g' feeds/packages/lang/python/python3/Makefile
+          
+          # 移除可能导致问题的 profile 相关选项
+          sed -i '/--enable-profile-optimizations/d' feeds/packages/lang/python/python3/Makefile
+          sed -i '/CFLAGS_NODIST.*-fprofile/d' feeds/packages/lang/python/python3/Makefile
+          
+          echo "Python3 修复完成"
+        else
+          echo "未找到 Python3 Makefile，跳过修复"
+        fi
+        
     - name: 加载自定义配置
       env:
         CONFIG_FILE_PATH: ${{ matrix.ARCHITECTURE }}/${{ env.CONFIG_FILE }}
       run: |
-        export PATH=/usr/bin:$PATH
-        export CC=/usr/bin/clang-12
-        export CXX=/usr/bin/clang++-12
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE_PATH ] && mv $CONFIG_FILE_PATH openwrt/$CONFIG_FILE
         chmod +x $DIY_P2_SH
@@ -212,29 +194,89 @@ jobs:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
+    - name: 生成配置文件
+      run: |
+        cd openwrt
+        make defconfig
+        echo "配置文件生成完成"
+
     - name: 下载软件包
       id: package
       run: |
-        export PATH=/usr/bin:$PATH
-        export CC=/usr/bin/clang-12
-        export CXX=/usr/bin/clang++-12
         cd openwrt
-        make defconfig
-        make download -j8
+        echo "开始下载软件包..."
+        
+        # 使用重试机制下载包
+        for i in {1..3}; do
+          if make download -j8; then
+            echo "软件包下载成功"
+            break
+          else
+            echo "第 $i 次下载失败，等待 30 秒后重试..."
+            sleep 30
+          fi
+        done
+        
+        # 检查并清理下载失败的包
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
+        
+        echo "软件包下载完成"
 
     - name: 编译固件
       id: compile
       run: |
-        export PATH=/usr/bin:$PATH
-        export CC=/usr/bin/clang-12
-        export CXX=/usr/bin/clang++-12
         cd openwrt
-        echo -e "$(nproc) thread compile"
-        make -j$(nproc) || make -j1 || make -j1 V=s
+        echo "开始编译固件..."
+        echo "使用 $(nproc) 个CPU核心进行编译"
+        
+        # 显示编译开始时间
+        start_time=$(date)
+        echo "编译开始时间: $start_time"
+        
+        # 设置编译参数
+        MAKE_JOBS=$(nproc)
+        
+        # 首先尝试多线程编译
+        echo "尝试多线程编译 (j$MAKE_JOBS)..."
+        if make -j$MAKE_JOBS; then
+          echo "多线程编译成功！"
+        else
+          echo "多线程编译失败，尝试单线程编译..."
+          if make -j1; then
+            echo "单线程编译成功！"
+          else
+            echo "单线程编译也失败，开启详细输出进行最后尝试..."
+            echo "这可能需要很长时间，请耐心等待..."
+            if make -j1 V=s; then
+              echo "详细模式编译成功！"
+            else
+              echo "编译完全失败，请检查错误日志"
+              exit 1
+            fi
+          fi
+        fi
+        
+        # 显示编译完成时间
+        end_time=$(date)
+        echo "编译完成时间: $end_time"
+        
+        # 设置输出变量
         echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
-        echo "::set-output name=status::success"
+        echo "status=success" >> $GITHUB_OUTPUT
+
+    - name: 检查编译产物
+      run: |
+        cd openwrt
+        echo "检查编译产物..."
+        
+        if [ -d "bin/targets" ]; then
+          echo "编译产物目录存在"
+          find bin/targets -name "*.img*" -o -name "*.bin" -o -name "*.gz" | head -10
+        else
+          echo "警告: 编译产物目录不存在"
+          ls -la bin/ || echo "bin 目录不存在"
+        fi
 
     - name: 检查磁盘空间
       if: (!cancelled())
@@ -254,7 +296,7 @@ jobs:
         cd openwrt/bin/targets/*/*
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
-        echo "::set-output name=status::success"
+        echo "status=success" >> $GITHUB_OUTPUT
 
     - name: 上传固件目录
       uses: actions/upload-artifact@v4
@@ -267,7 +309,7 @@ jobs:
       id: tag
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
-        echo "::set-output name=release_tag::${{ matrix.ARCHITECTURE }}-24.10"
+        echo "release_tag=${{ matrix.ARCHITECTURE }}-24.10" >> $GITHUB_OUTPUT
         touch release.txt
         echo "
         💻 架构: ${{ matrix.ARCHITECTURE }}
@@ -278,12 +320,15 @@ jobs:
 
         ⏱️ 编译时间: $(date +"%Y年%m月%d日%H时%M分")
 
-        🌐 管理地址: 192.168.100.1
+        🌐 管理地址: ${{ github.event.inputs.lan_ip }}
 
         👤 用户名: root
 
-        🔒 密码: password " >> release.txt
-        echo "::set-output name=status::success"
+        🔒 密码: password
+
+        📝 说明: 本固件基于 iStoreOS 24.10 构建，已优化编译流程并修复已知问题
+        " >> release.txt
+        echo "status=success" >> $GITHUB_OUTPUT
 
     - name: 自动发布固件到 Releases
       uses: softprops/action-gh-release@v2
