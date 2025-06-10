@@ -124,7 +124,7 @@ jobs:
     - name: 缓存构建动作
       uses: klever1988/cachewrtbuild@main
       with:
-        ccache: 'true'
+        ccache: 'false'
         mixkey: ${{ matrix.os }}-${{ matrix.ARCHITECTURE }}-${{ matrix.REPO_BRANCH }}-gcc-optimized
         prefix: ${{ github.workspace }}/openwrt
 
