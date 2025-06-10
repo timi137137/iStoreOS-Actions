@@ -56,11 +56,16 @@ jobs:
 
     - name: 强力清理磁盘空间
       run: |
-        sudo rm -rf /tmp/*
-        docker system prune -af
-        sudo apt-get clean
+        echo "初始磁盘空间"
+        df -hT
+        sudo rm -rf /tmp/* /var/tmp/*
+        sudo rm -rf $HOME/.cache
         sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache /opt/az /opt/mssql-tools /opt/pipx /usr/local/share/boost
-        df -h
+        sudo docker system prune -af || true
+        sudo apt-get clean
+        sudo apt-get autoremove -y
+        echo "清理后磁盘空间"
+        df -hT
 
     - name: 检查服务器配置
       run: |
@@ -92,8 +97,8 @@ jobs:
         sudo rm -rf get-pip.py
         sudo pip install pyelftools
         echo "------------------------------- 清理Docker镜像和软件 -------------------------------"
-        docker rmi $(docker images -q) 2>/dev/null || true
-        docker image prune -a -f
+        sudo docker rmi $(sudo docker images -q) 2>/dev/null || true
+        sudo docker image prune -a -f || true
         sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* adoptopenjdk* mysql* php* mongodb* dotnet* moby* snapd* android* || true
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
@@ -101,6 +106,8 @@ jobs:
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /mnt/workdir
         sudo chown $USER:$GROUPS /mnt/workdir
+        echo "环境初始化后磁盘空间"
+        df -hT
 
     - name: 安装 Go 1.21.1
       uses: actions/setup-go@v5
@@ -120,6 +127,12 @@ jobs:
         ccache: 'true'
         mixkey: ${{ matrix.os }}-${{ matrix.ARCHITECTURE }}-${{ matrix.REPO_BRANCH }}-gcc-optimized
         prefix: ${{ github.workspace }}/openwrt
+
+    - name: 预修复 feeds 依赖报错
+      run: |
+        # 移除已知的不存在依赖，防止编译中断
+        sed -i '/LingTiGameAcc/d' openwrt/package/feeds/third_party/luci-app-LingTiGameAcc/Makefile || true
+        sed -i '/netdata-ssl/d' openwrt/package/community/luci-app-netdata/Makefile || true
 
     - name: 加载自定义 feeds
       env:
@@ -214,6 +227,7 @@ jobs:
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
         echo "软件包下载完成"
+        df -hT
 
     - name: 编译固件
       id: compile
@@ -237,6 +251,9 @@ jobs:
               echo "详细模式编译成功！"
             else
               echo "编译完全失败，请检查错误日志"
+              # 自动清理大目录，为重试释放空间
+              cd ..
+              rm -rf openwrt/build_dir openwrt/staging_dir || true
               exit 1
             fi
           fi
@@ -245,6 +262,7 @@ jobs:
         echo "编译完成时间: $end_time"
         echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
+        df -hT
 
     - name: 检查编译产物
       run: |
@@ -257,6 +275,7 @@ jobs:
           echo "警告: 编译产物目录不存在"
           ls -la bin/ || echo "bin 目录不存在"
         fi
+        df -hT
 
     - name: 检查磁盘空间
       if: (!cancelled())
