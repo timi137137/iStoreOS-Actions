@@ -36,8 +36,8 @@ sed -i 's/services/system/g' feeds/luci/applications/luci-app-ttyd/root/usr/shar
 # 修改默认密码
 sed -i 's/root:::0:99999:7:::/root:$1$5mjCdAB1$Uk1sNbwoqfHxUmzRIeuZK1:0:0:99999:7:::/g' package/base-files/files/etc/shadow
 
-# default-settings
-git clone --depth=1 -b iStoreOS https://github.com/s71557/default-settings package/default-settings
+# iStoreOS-settings
+git clone --depth=1 -b main https://github.com/s71557/istoreos-settings package/default-settings
 
 # 添加第三方应用
 mkdir kiddin9
