@@ -101,30 +101,3 @@ CONFIG_VMDK_IMAGES=y
 # CONFIG_ISO_IMAGES=y
 CONFIG_QCOW2_IMAGES=y
 " >> .config
-
-# 添加设备
-if [ "$1" = "rk33xx" ]; then
-    sed -i "s/# CONFIG_TARGET_DEVICE_rockchip_armv8_DEVICE_armsom_p2-pro is not set/CONFIG_TARGET_DEVICE_rockchip_armv8_DEVICE_armsom_p2-pro=y/g" .config
-    sed -i "s/# CONFIG_TARGET_DEVICE_rockchip_armv8_DEVICE_pine64_rockpro64 is not set/CONFIG_TARGET_DEVICE_rockchip_armv8_DEVICE_pine64_rockpro64=y/g" .config
-    sed -i "s/# CONFIG_TARGET_DEVICE_rockchip_armv8_DEVICE_radxa_rock-pi-4a is not set/CONFIG_TARGET_DEVICE_rockchip_armv8_DEVICE_radxa_rock-pi-4a=y/g" .config
-    sed -i "s/# CONFIG_TARGET_DEVICE_rockchip_armv8_DEVICE_rockchip_rk3308_evb is not set/CONFIG_TARGET_DEVICE_rockchip_armv8_DEVICE_rockchip_rk3308_evb=y/g" .config
-elif [ "$1" = "rk35xx" ]; then
-    sed -i "s/# CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_armsom_sige1 is not set/CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_armsom_sige1=y/g" .config
-    sed -i "s/# CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_armsom_sige7-v1 is not set/CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_armsom_sige7-v1=y/g" .config
-    sed -i "s/# CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_cyber3588_aib is not set/CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_cyber3588_aib=y/g" .config
-    sed -i "s/# CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_dg_nas-lite is not set/CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_dg_nas-lite=y/g" .config
-    sed -i "s/# CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_fastrhino_r66s is not set/CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_fastrhino_r66s=y/g" .config
-    sed -i "s/# CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_fastrhino_r68s is not set/CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_fastrhino_r68s=y/g" .config
-    sed -i "s/# CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_hinlink_hnas is not set/CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_hinlink_hnas=y/g" .config
-    sed -i "s/# CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_idiskk_h1 is not set/CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_idiskk_h1=y/g" .config
-    sed -i "s/# CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_inspur_ihec301 is not set/CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_inspur_ihec301=y/g" .config
-    sed -i "s/# CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_jp_tvbox is not set/CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_jp_tvbox=y/g" .config
-    sed -i "s/# CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_jsy_h1 is not set/CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_jsy_h1=y/g" .config
-    sed -i "s/# CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_le_hes30 is not set/CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_le_hes30=y/g" .config
-    sed -i "s/# CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_panther_x2 is not set/CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_panther_x2=y/g" .config
-    sed -i "s/# CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_roc_k50s is not set/CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_roc_k50s=y/g" .config
-    sed -i "s/# CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_ynn_ynnnas is not set/CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_ynn_ynnnas=y/g" .config
-    sed -i "s/# CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_yyy_h1 is not set/CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_yyy_h1=y/g" .config
-fi
-
-cat .config
