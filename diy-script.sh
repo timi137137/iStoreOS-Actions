@@ -64,7 +64,7 @@ chmod -R 777 files/bin/ZeroWrt
 chmod -R 777 files/root/version.txt
 
 # default-settings
-git clone --depth=1 -b iStoreOS https://github.com/oppen321/default-settings package/default-settings
+git clone --depth=1 -b iStoreOS https://github.com/s71557/default-settings package/default-settings
 # 更新Feeds
 ./scripts/feeds update -a
 ./scripts/feeds install -a
