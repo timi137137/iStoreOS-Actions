@@ -1,4 +1,4 @@
-name: Builser-istoreos-24.10-X86_64
+name: Build iStore OS 23.05-X86_64
 
 on:
   workflow_dispatch:
