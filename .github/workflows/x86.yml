@@ -1,4 +1,4 @@
-name: 💻 iStoreOS_X86_64_test
+name: 💻 iStoreOS_X86_64
 
 on:
   workflow_dispatch:
