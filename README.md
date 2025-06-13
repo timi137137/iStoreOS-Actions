@@ -26,30 +26,30 @@
 
 | 设备       | 包名称                                                                    |
 | ---------- | ------------------------------------------------------------------------- |
-| R2S        | istoreos-rockchip-armv8-friendlyarm_nanopi-r2s-squashfs-sysupgrade.img.gz |
-| R4S        | istoreos-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz |
-| R4SE       | istoreos-rockchip-armv8-friendlyarm_nanopi-r4se-squashfs-sysupgrade.img.gz |
-| ROCK-PI-4A | istoreos-rockchip-armv8-radxa_rock-pi-squashfs-sysupgrade.img.gz           |
-| ROCKPRO64  | istoreos-rockchip-armv8-pine64_rockpro64-squashfs-sysupgrade.img.gz        |
+| <del>R2S</del>        | <del>istoreos-rockchip-armv8-friendlyarm_nanopi-r2s-squashfs-sysupgrade.img.gz</del> |
+| <del>R4S</del>        | <del>istoreos-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz</del> |
+| <del>R4SE</del>       | <del>istoreos-rockchip-armv8-friendlyarm_nanopi-r4se-squashfs-sysupgrade.img.gz</del> |
+| <del>ROCK-PI-4A</del> | <del>istoreos-rockchip-armv8-radxa_rock-pi-squashfs-sysupgrade.img.gz</del>           |
+| <del>ROCKPRO64</del>  | <del>istoreos-rockchip-armv8-pine64_rockpro64-squashfs-sysupgrade.img.gz</del>        |
 
 ### RK35xx 架构
 
 | 设备           | 包名称                                                                   |
 | -------------- | ------------------------------------------------------------------------ |
-| H66K/H68K/H69K | istoreos-rockchip-rk35xx-hinlink_opc-h6xk-squashfs-combined.img.gz       |
-| H88K           | istoreos-rockchip-rk35xx-hinlink_h88k-squashfs-combined.img.gz           |
-| NANOPI-R5S     | istoreos-rockchip-rk35xx-friendlyarm_nanopi-r5s-squashfs-combined.img.gz |
-| NANOPI-R6S     | istoreos-rockchip-rk35xx-friendlyarm_nanopi-r6s-squashfs-combined.img.gz |
-| R66S/R68S      | istoreos-rockchip-rk35xx-fastrhino_r6xs-squashfs-combined.img.gz         |
-| STATION-P2     | istoreos-rockchip-rk35xx-firefly_station-p2-squashfs-combined.img.gz     |
-| T68M           | istoreos-rockchip-rk35xx-lyt_t68m-squashfs-combined.img.gz               |
+| <del>H66K/H68K/H69K</del> | <del>istoreos-rockchip-rk35xx-hinlink_opc-h6xk-squashfs-combined.img.gz</del>       |
+| <del>H88K</del>           | <del>istoreos-rockchip-rk35xx-hinlink_h88k-squashfs-combined.img.gz</del>           |
+| <del>NANOPI-R5S</del>     | <del>istoreos-rockchip-rk35xx-friendlyarm_nanopi-r5s-squashfs-combined.img.gz</del> |
+| <del>NANOPI-R6S</del>     | <del>istoreos-rockchip-rk35xx-friendlyarm_nanopi-r6s-squashfs-combined.img.gz</del> |
+| <del>R66S/R68S</del>      | <del>istoreos-rockchip-rk35xx-fastrhino_r6xs-squashfs-combined.img.gz</del>         |
+| <del>STATION-P2</del>     | <del>istoreos-rockchip-rk35xx-firefly_station-p2-squashfs-combined.img.gz</del>     |
+| <del>T68M</del>           | <del>istoreos-rockchip-rk35xx-lyt_t68m-squashfs-combined.img.gz</del>               |
 
 ### x86 架构
 
 | 启动       | 包名称                                              |
 | ---------- | --------------------------------------------------- |
-| X86-64     | istoreos-x86-64-generic-squashfs-combined.img.gz    |
-| X86-64-EFI | storeos-x86-64-generic-squashfs-combined-efi.img.gz |
+| X86-64     | stoneos-x86-64-generic-squashfs-combined.img.gz    |
+| X86-64-EFI | stoneos-x86-64-generic-squashfs-combined-efi.img.gz |
 
 ## 鸣谢
 
