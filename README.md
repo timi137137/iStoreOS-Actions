@@ -23,7 +23,14 @@
 
 ## 支持架构
 
-### RK33xx 架构
+### x86 架构
+
+| 启动       | 包名称                                              |
+| ---------- | --------------------------------------------------- |
+| X86-64     | stoneos-x86-64-generic-squashfs-combined.img.gz    |
+| X86-64-EFI | stoneos-x86-64-generic-squashfs-combined-efi.img.gz |
+
+### <del>RK33xx 架构</del>  
 
 | 设备       | 包名称                                                                    |
 | ---------- | ------------------------------------------------------------------------- |
@@ -33,7 +40,7 @@
 | <del>ROCK-PI-4A</del> | <del>istoreos-rockchip-armv8-radxa_rock-pi-squashfs-sysupgrade.img.gz</del>           |
 | <del>ROCKPRO64</del>  | <del>istoreos-rockchip-armv8-pine64_rockpro64-squashfs-sysupgrade.img.gz</del>        |
 
-### RK35xx 架构
+### <del>RK35xx 架构</del> 
 
 | 设备           | 包名称                                                                   |
 | -------------- | ------------------------------------------------------------------------ |
@@ -44,13 +51,6 @@
 | <del>R66S/R68S</del>      | <del>istoreos-rockchip-rk35xx-fastrhino_r6xs-squashfs-combined.img.gz</del>         |
 | <del>STATION-P2</del>     | <del>istoreos-rockchip-rk35xx-firefly_station-p2-squashfs-combined.img.gz</del>     |
 | <del>T68M</del>           | <del>istoreos-rockchip-rk35xx-lyt_t68m-squashfs-combined.img.gz</del>               |
-
-### x86 架构
-
-| 启动       | 包名称                                              |
-| ---------- | --------------------------------------------------- |
-| X86-64     | stoneos-x86-64-generic-squashfs-combined.img.gz    |
-| X86-64-EFI | stoneos-x86-64-generic-squashfs-combined-efi.img.gz |
 
 ## 鸣谢
 
