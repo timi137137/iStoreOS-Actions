@@ -6,9 +6,10 @@
 
 ## 功能特性
 
-- x86 支持 VMDK
 - 添加 OpenClash
-
+- 添加 HomeProxy
+- 添加 PassWall
+- 添加 WireGuard
 
 ## 默认配置
 
