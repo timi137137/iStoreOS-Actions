@@ -16,16 +16,14 @@ git clone https://github.com/sbwml/packages_lang_golang -b 24.x feeds/packages/l
 
 # 必要的库
 git clone --depth=1 -b main https://github.com/linkease/istore-packages package/istore-packages
-git clone --depth=1 -b master https://github.com/jjm2473/luci-app-diskman package/diskman
-git clone --depth=1 -b dev4 https://github.com/jjm2473/OpenAppFilter package/oaf
+git clone --depth=1 -b dev https://github.com/jjm2473/luci-app-diskman package/diskman
+git clone --depth=1 -b dev6 https://github.com/jjm2473/OpenAppFilter package/oaf
 git clone --depth=1 -b master https://github.com/linkease/nas-packages package/nas-packages
 git clone --depth=1 -b main https://github.com/linkease/nas-packages-luci package/nas-packages-luci
 git clone --depth=1 -b main https://github.com/jjm2473/openwrt-apps package/openwrt-apps
 
 # 科学上网插件
 rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box}
-rm -rf feeds/third_party/luci-app-LingTiGameAcc
-rm -rf package/diy/luci-app-ota
 git_sparse_clone master https://github.com/vernesong/OpenClash luci-app-openclash
 # git clone --depth=1 https://github.com/nikkinikki-org/OpenWrt-nikki package/nikki
 # git clone https://github.com/sbwml/openwrt_helloworld package/helloworld
