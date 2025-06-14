@@ -26,8 +26,6 @@ git clone --depth=1 -b main https://github.com/jjm2473/openwrt-apps package/open
 rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box}
 rm -rf package/diy/luci-app-ota
 git_sparse_clone master https://github.com/vernesong/OpenClash luci-app-openclash
-# git clone --depth=1 https://github.com/nikkinikki-org/OpenWrt-nikki package/nikki
-# git clone https://github.com/sbwml/openwrt_helloworld package/helloworld
 git clone https://github.com/xiaorouji/openwrt-passwall-packages package/passwall-packages
 git clone https://github.com/xiaorouji/openwrt-passwall package/passwall
 git_sparse_clone main https://github.com/s71557/istoreos-ota luci-app-ota
@@ -41,6 +39,9 @@ sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='StoneOS-$(date +%Y%m%d)
 sed -i "s/DISTRIB_REVISION='*.*'/DISTRIB_REVISION=' By Stone'/g" package/base-files/files/etc/openwrt_release
 # TTYD
 sed -i 's/services/system/g' feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json
+# 调至vpn
+sed -i 's/services/vpn/g' feeds/luci/applications/luci-app-passwall/root/usr/share/luci/menu.d/luci-app-passwall.json
+sed -i 's/services/vpn/g' feeds/luci/applications/luci-app-openclash/root/usr/share/luci/menu.d/luci-app-openclash.json
 # 修改默认密码
 # sed -i 's/root:::0:99999:7:::/root:$1$5mjCdAB1$Uk1sNbwoqfHxUmzRIeuZK1:0:0:99999:7:::/g' package/base-files/files/etc/shadow
 # 更换默认背景
