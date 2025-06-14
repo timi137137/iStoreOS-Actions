@@ -1,4 +1,4 @@
-name: 💻 iStoreOS_X86_64-24.10
+name: 💻 iStoreOS_AXT1800-24.10
 
 on:
   workflow_dispatch:
@@ -8,13 +8,13 @@ on:
 env:
   REPO_URL: https://github.com/istoreos/istoreos
   REPO_BRANCH: istoreos-24.10
-  CONFIG_FILE: configs/x86.config
+  CONFIG_FILE: configs/axt1800.config
   DIY_SCRIPT: diy-script.sh
-  CLASH_KERNEL: amd64
+  CLASH_KERNEL: arm64
   CACHE_TOOLCHAIN: true
   UPLOAD_BIN_DIR: false
   FIRMWARE_RELEASE: true
-  FIRMWARE_TAG: x86
+  FIRMWARE_TAG: arm64
   TZ: Asia/Shanghai
 
 jobs:
