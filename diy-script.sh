@@ -24,6 +24,7 @@ git clone --depth=1 -b main https://github.com/jjm2473/openwrt-apps package/open
 
 # 科学上网插件
 rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box}
+rm -rf package/diy/luci-app-ota
 git_sparse_clone master https://github.com/vernesong/OpenClash luci-app-openclash
 # git clone --depth=1 https://github.com/nikkinikki-org/OpenWrt-nikki package/nikki
 # git clone https://github.com/sbwml/openwrt_helloworld package/helloworld
