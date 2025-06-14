@@ -17,8 +17,6 @@
 - 密码: `空`
 - 如果设备只有一个网口，则此网口就是 `LAN` , 如果大于一个网口, 默认第一个网口是 `WAN` 口, 其它都是 `LAN`
 - 如果要修改 `LAN` 口 `IP` , 首页有个内网设置，或者用命令 `quickstart` 修改
-- 北京时间每天 `0:00` 定时编译, `Release` 中只保留不同架构的最新版本
-- 历史版本在 `Actions` 中选择一个已经运行完成且成功的 `workflow` 在页面底部可以看到 `Artifacts`, `Artifacts` 需要登录 Github 才能下载
 
 ## 支持架构
 
@@ -28,28 +26,6 @@
 | ---------- | --------------------------------------------------- |
 | X86-64     | stoneos-x86-64-generic-squashfs-combined.img.gz    |
 | X86-64-EFI | stoneos-x86-64-generic-squashfs-combined-efi.img.gz |
-
-### <del>RK33xx 架构</del>  
-
-| 设备       | 包名称                                                                    |
-| ---------- | ------------------------------------------------------------------------- |
-| <del>R2S</del>        | <del>istoreos-rockchip-armv8-friendlyarm_nanopi-r2s-squashfs-sysupgrade.img.gz</del> |
-| <del>R4S</del>        | <del>istoreos-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz</del> |
-| <del>R4SE</del>       | <del>istoreos-rockchip-armv8-friendlyarm_nanopi-r4se-squashfs-sysupgrade.img.gz</del> |
-| <del>ROCK-PI-4A</del> | <del>istoreos-rockchip-armv8-radxa_rock-pi-squashfs-sysupgrade.img.gz</del>           |
-| <del>ROCKPRO64</del>  | <del>istoreos-rockchip-armv8-pine64_rockpro64-squashfs-sysupgrade.img.gz</del>        |
-
-### <del>RK35xx 架构</del> 
-
-| 设备           | 包名称                                                                   |
-| -------------- | ------------------------------------------------------------------------ |
-| <del>H66K/H68K/H69K</del> | <del>istoreos-rockchip-rk35xx-hinlink_opc-h6xk-squashfs-combined.img.gz</del>       |
-| <del>H88K</del>           | <del>istoreos-rockchip-rk35xx-hinlink_h88k-squashfs-combined.img.gz</del>           |
-| <del>NANOPI-R5S</del>     | <del>istoreos-rockchip-rk35xx-friendlyarm_nanopi-r5s-squashfs-combined.img.gz</del> |
-| <del>NANOPI-R6S</del>     | <del>istoreos-rockchip-rk35xx-friendlyarm_nanopi-r6s-squashfs-combined.img.gz</del> |
-| <del>R66S/R68S</del>      | <del>istoreos-rockchip-rk35xx-fastrhino_r6xs-squashfs-combined.img.gz</del>         |
-| <del>STATION-P2</del>     | <del>istoreos-rockchip-rk35xx-firefly_station-p2-squashfs-combined.img.gz</del>     |
-| <del>T68M</del>           | <del>istoreos-rockchip-rk35xx-lyt_t68m-squashfs-combined.img.gz</del>               |
 
 ## 鸣谢
 
